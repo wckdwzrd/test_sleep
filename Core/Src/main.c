@@ -43,7 +43,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint32_t testVar = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -97,6 +97,16 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+    // There is a Timer1 that is running in the background
+    // It is configured to generate an interrupt every 10ms
+    // So this mean that testVar will be incremented every 10ms  
+    testVar++;
+    if (testVar == 1000)
+    {
+      testVar = 0;  // Reset the counter just to visualize overflow in STMViewer every 10s
+    }
+    HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI);
   }
   /* USER CODE END 3 */
 }
