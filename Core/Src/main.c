@@ -18,7 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "tim.h"
+#include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -85,7 +85,7 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_TIM1_Init();
+  MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -98,11 +98,11 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-    // There is a Timer1 that is running in the background
-    // It is configured to generate an interrupt every 10ms
-    // So this mean that testVar will be incremented every 10ms  
+    // There is a SysTick that is running in the background
+    // It is configured to generate an interrupt every 1ms
+    // So this mean that MCU will wakeup on interrupt and testVar will be incremented every 1ms  
     testVar++;
-    if (testVar == 1000)
+    if (testVar == 10000)
     {
       testVar = 0;  // Reset the counter just to visualize overflow in STMViewer every 10s
     }
