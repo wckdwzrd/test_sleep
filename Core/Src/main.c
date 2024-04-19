@@ -107,6 +107,8 @@ int main(void)
       testVar = 0;  // Reset the counter just to visualize overflow in STMViewer every 10s
     }
     HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI);
+    // You can change enter sleep to delay 1 ms and see the difference
+    // HAL_Delay(1);
   }
   /* USER CODE END 3 */
 }
