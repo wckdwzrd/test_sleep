@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdbool.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,6 +44,8 @@
 
 /* USER CODE BEGIN PV */
 uint32_t testVar = 0;
+uint32_t testVar2 = 0;
+uint32_t testVar3 = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -92,6 +94,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  bool isSleepEnabled = false;
   while (1)
   {
     /* USER CODE END WHILE */
@@ -102,13 +105,23 @@ int main(void)
     // It is configured to generate an interrupt every 1ms
     // So this mean that MCU will wakeup on interrupt and testVar will be incremented every 1ms  
     testVar++;
-    if (testVar == 10000)
+    testVar2 = 0x12345678;
+    testVar3 = DBGMCU->CR;
+    // CoreDebug->DEMCR = CoreDebug_DEMCR_TRCENA_Msk;
+    if (testVar == 1000)
     {
-      testVar = 0;  // Reset the counter just to visualize overflow in STMViewer every 10s
+      testVar = 1;  // Reset the counter just to visualize overflow in STMViewer every 10s
+      isSleepEnabled = !isSleepEnabled;
+      if (isSleepEnabled)
+        HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
+      else
+        HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
     }
-    HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI);
-    // You can change enter sleep to delay 1 ms and see the difference
-    // HAL_Delay(1);
+    if (isSleepEnabled)
+      HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI);
+    else
+      HAL_Delay(1);
+
   }
   /* USER CODE END 3 */
 }
